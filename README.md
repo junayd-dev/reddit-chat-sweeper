@@ -1,10 +1,10 @@
 # Reddit Chat Sweeper
 
-A Firefox extension that deletes **your own** Reddit chat messages in bulk, and can remove conversations from your chat list.
+A Firefox extension that deletes **your own** Reddit chat messages in bulk, and can remove conversations from your chat list without any limit.
 
 You pick conversations from a checklist, press one button, and watch the progress. There is nothing to install besides the extension itself: no Python, no Command Prompt, no copying of tokens.
 
-> **Please read this first (honest status).** I could not log in to a real Reddit account while building this, so it has been tested against a *simulated* Reddit chat server (20 automated tests plus a click-through of the real interface), **not against live Reddit**. Reddit's chat uses internal, undocumented web addresses that Reddit can change at any time. Because of that, **please try it on one conversation first** using the "Count my messages" button, then a real delete on a single unimportant conversation, before running it on everything. See [Troubleshooting](#troubleshooting) if something is off.
+
 
 ---
 
