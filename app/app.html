@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reddit Chat Sweeper</title>
+  <link rel="icon" href="../icons/icon.svg">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <header class="masthead">
+    <h1>Reddit Chat Sweeper</h1>
+    <p>Delete your own Reddit chat messages in bulk. This runs entirely in your browser and talks only to Reddit.</p>
+  </header>
+
+  <main>
+    <div id="banner" class="banner" role="alert" hidden></div>
+
+    <section class="panel" aria-labelledby="h-connect">
+      <h2 id="h-connect"><span class="step">1</span> Connect to Reddit</h2>
+      <div class="conn-row">
+        <p id="conn" class="conn" role="status"><span id="conn-dot" class="dot" aria-hidden="true"></span><span id="conn-text"></span></p>
+        <button id="btn-open-reddit" class="btn" type="button">Open Reddit Chat</button>
+      </div>
+      <div id="perm-box" class="notice perm" hidden>
+        <span><b>Firefox has not allowed this extension to see Reddit's chat server yet.</b> This is the most common reason for "session not available".</span>
+        <button id="btn-grant" class="btn btn-primary" type="button">Allow access</button>
+      </div>
+      <p id="diag" class="hint"></p>
+      <details class="adv" id="trouble">
+        <summary>Troubleshooting details and manual option</summary>
+        <pre id="diag-pre" class="log" tabindex="0"></pre>
+        <button id="btn-copy-diag" class="btn btn-quiet" type="button">Copy these details</button>
+        <hr>
+        <p class="hint"><b>Last resort: paste a session token by hand.</b> Only use this if automatic detection keeps failing. On the Reddit Chat tab press <b>F12</b>, open the <b>Network</b> tab, press F5, type <code>matrix</code> in the filter, click any request, find <b>Authorization</b> under <i>Request Headers</i>, and copy what comes after <code>Bearer</code>. Treat it like a password: never share it. It is kept in memory only and forgotten when Firefox closes.</p>
+        <div class="manual">
+          <input id="manual-token" type="password" autocomplete="off" spellcheck="false" placeholder="Paste token here">
+          <button id="btn-manual" class="btn" type="button">Use this token</button>
+        </div>
+      </details>
+      <p class="hint">You need to be logged in to Reddit in this Firefox. The extension notices the session your Reddit chat page uses, so there is nothing to copy or paste.</p>
+    </section>
+
+    <section class="panel" aria-labelledby="h-pick">
+      <div class="panel-head">
+        <h2 id="h-pick"><span class="step">2</span> Pick conversations</h2>
+        <button id="btn-load" class="btn btn-primary" type="button">Load my conversations</button>
+      </div>
+
+      <div class="toolbar" id="toolbar" hidden>
+        <label class="search">
+          <span class="sr-only">Filter conversations by name</span>
+          <input id="filter" type="search" placeholder="Filter by name" autocomplete="off">
+        </label>
+        <button id="btn-all" class="btn btn-quiet" type="button">Select all shown</button>
+        <button id="btn-none" class="btn btn-quiet" type="button">Select none</button>
+        <span id="count" class="count" aria-live="polite"></span>
+      </div>
+
+      <ul id="rooms" class="rooms" aria-label="Your conversations">
+        <li class="empty">No conversations loaded yet. Press <b>Load my conversations</b>.</li>
+      </ul>
+    </section>
+
+    <section class="panel" aria-labelledby="h-act">
+      <h2 id="h-act"><span class="step">3</span> Choose what to do</h2>
+      <fieldset class="modes" id="modes">
+        <legend class="sr-only">What should happen to the selected conversations?</legend>
+        <label class="mode">
+          <input type="radio" name="mode" value="messages" checked>
+          <span><b>Delete my messages</b><small>The conversation stays in your list. Other people's messages are not touched.</small></span>
+        </label>
+        <label class="mode">
+          <input type="radio" name="mode" value="messages+leave">
+          <span><b>Delete my messages, then leave</b><small>Removes the conversation from your list afterwards. Skipped automatically if any deletion failed.</small></span>
+        </label>
+        <label class="mode">
+          <input type="radio" name="mode" value="leave">
+          <span><b>Leave only</b><small>Removes the conversation from your list. Your messages stay visible to the other people.</small></span>
+        </label>
+      </fieldset>
+      <div class="actions">
+        <button id="btn-preview" class="btn" type="button" disabled>Count my messages (deletes nothing)</button>
+        <button id="btn-delete" class="btn btn-danger" type="button" disabled>Delete selected…</button>
+      </div>
+    </section>
+
+    <section class="panel" id="progress-panel" aria-labelledby="h-prog" hidden>
+      <div class="panel-head">
+        <h2 id="h-prog">Progress</h2>
+        <button id="btn-stop" class="btn" type="button" hidden>Stop</button>
+      </div>
+      <progress id="bar" value="0" max="1" aria-label="Conversations processed"></progress>
+      <p id="current" class="current" aria-live="polite"></p>
+      <p id="ratelimit" class="notice" role="status" hidden></p>
+      <dl class="totals">
+        <div><dt>Deleted</dt><dd id="t-deleted">0</dd></div>
+        <div><dt>Failed</dt><dd id="t-failed" class="bad">0</dd></div>
+        <div><dt>Conversations done</dt><dd id="t-rooms">0</dd></div>
+        <div><dt>Left</dt><dd id="t-left">0</dd></div>
+      </dl>
+      <p id="summary" class="summary" hidden></p>
+    </section>
+
+    <details class="panel log-wrap" id="log-wrap">
+      <summary>Activity log</summary>
+      <pre id="log" class="log" tabindex="0"></pre>
+      <button id="btn-log" class="btn btn-quiet" type="button">Save log as text file</button>
+      <p class="hint">The log has conversation names and counts. It never contains message text or your access token.</p>
+    </details>
+  </main>
+
+  <dialog id="confirm" aria-labelledby="confirm-title">
+    <h2 id="confirm-title">Are you sure?</h2>
+    <p id="confirm-lead"></p>
+    <ul id="confirm-names" class="names"></ul>
+    <ul id="confirm-effects" class="effects"></ul>
+    <label class="ack"><input id="confirm-ack" type="checkbox"> I understand this cannot be undone.</label>
+    <div class="actions">
+      <button id="confirm-no" class="btn" type="button">Cancel</button>
+      <button id="confirm-yes" class="btn btn-danger" type="button" disabled>Delete now</button>
+    </div>
+  </dialog>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

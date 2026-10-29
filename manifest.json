@@ -1,0 +1,64 @@
+{
+  "manifest_version": 3,
+  "name": "Reddit Chat Sweeper",
+  "version": "1.0.2",
+  "description": "Bulk-delete your own Reddit chat messages and leave conversations. Runs locally in your browser; nothing is sent anywhere except to Reddit.",
+  "icons": {
+    "48": "icons/icon.svg",
+    "96": "icons/icon.svg"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "reddit-chat-sweeper@junayd-dev.github.io",
+      "strict_min_version": "140.0",
+      "data_collection_permissions": {
+        "required": [
+          "none"
+        ]
+      }
+    }
+  },
+  "permissions": [
+    "webRequest",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://*.redditspace.com/*",
+    "https://www.reddit.com/*",
+    "https://reddit.com/*"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "action": {
+    "default_title": "Open Reddit Chat Sweeper",
+    "default_icon": {
+      "32": "icons/icon.svg"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.reddit.com/*",
+        "https://reddit.com/*"
+      ],
+      "js": [
+        "content/hook-main.js"
+      ],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": [
+        "https://www.reddit.com/*",
+        "https://reddit.com/*"
+      ],
+      "js": [
+        "content/relay.js"
+      ],
+      "run_at": "document_start"
+    }
+  ]
+}

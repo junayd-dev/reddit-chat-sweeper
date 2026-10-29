@@ -1,0 +1,8 @@
+{
+  "name": "reddit-chat-sweeper",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Developer-only: lets you run the automated tests with `npm test`. Firefox does not use this file.",
+  "scripts": { "test": "node --test tests/*.test.js" }
+}
