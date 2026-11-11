@@ -7,9 +7,9 @@ You pick conversations from a checklist, press one button, and watch the progres
 
 <table>
 <tr>
-<td><img src="Screenshots/screenshot-1-select-light.png" width="200"></td>
-<td><img src="Screenshots/screenshot-2-confirm-light.png" width="200"></td>
-<td><img src="Screenshots/screenshot-3-done-light.png" width="200"></td>
+<td><img src="Screenshots/screenshot-1-select-light.png" width="250"></td>
+<td><img src="Screenshots/screenshot-2-confirm-light.png" width="250"></td>
+<td><img src="Screenshots/screenshot-3-done-light.png" width="250"></td>
 </tr>
 </table>
 
