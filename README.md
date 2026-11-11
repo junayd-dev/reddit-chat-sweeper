@@ -14,7 +14,7 @@ You pick conversations from a checklist, press one button, and watch the progres
 </table>
 
 <p align="center">Screenshots</p>
----
+
 
 ## What it can and cannot do
 
