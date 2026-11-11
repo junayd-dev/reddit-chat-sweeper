@@ -4,11 +4,16 @@ A Firefox extension that deletes **your own** Reddit chat messages in bulk, and 
 
 You pick conversations from a checklist, press one button, and watch the progress. There is nothing to install besides the extension itself: no Python, no Command Prompt, no copying of tokens.
 
-Screenshots:
-<img src="Screenshots/screenshot-1-select-light.png" width="200" height="auto">
-<img src="Screenshots/screenshot-2-confirm-light.png" width="200" height="auto">
-<img src="Screenshots/screenshot-3-done-light.png" width="200" height="auto">
 
+<table>
+<tr>
+<td><img src="Screenshots/screenshot-1-select-light.png" width="200"></td>
+<td><img src="Screenshots/screenshot-2-confirm-light.png" width="200"></td>
+<td><img src="Screenshots/screenshot-3-done-light.png" width="200"></td>
+</tr>
+</table>
+
+<p align="center">Screenshots</p>
 ---
 
 ## What it can and cannot do
